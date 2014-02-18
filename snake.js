@@ -12,6 +12,7 @@ window.snakeGame = (function (lib) {
 			E: new lib.Coord(0, 1), W: new lib.Coord(0, -1)
 		};
 		this.direction = "E";
+		this.moving = false;
 
 		// segments starts with tail and ends with head
 		this.segments = [new lib.Coord(0, 0), new lib.Coord(0, 1), 
@@ -46,7 +47,7 @@ window.snakeGame = (function (lib) {
 		if (height == undefined) {
 			this.height = 20;
 		} else {
-			this.width = width;
+			this.height = height;
 		}
 
 		if (width === undefined) {
@@ -87,8 +88,6 @@ window.snakeGame = (function (lib) {
 
 			stringBoard += "\n";
 		}
-
-		console.log(stringBoard);
 
 		return boardPic;
 	}
