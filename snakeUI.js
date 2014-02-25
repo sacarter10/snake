@@ -1,3 +1,5 @@
+//track high score using local storage
+
 window.snakeGameUI = (function (lib) {
 
 	lib.renderBoard = function (board) {
@@ -11,6 +13,8 @@ window.snakeGameUI = (function (lib) {
 			}
 		}
 
+		$('.points').html("<p>Points: " + board.points + "</p>");
+		lib.renderApples(board);
 		lib.renderSnake(board.snake);
 	}	
 
@@ -18,7 +22,8 @@ window.snakeGameUI = (function (lib) {
 		$($('body').keydown(function (event) {
 			if (!board.snake.moving) {
 				board.snake.moving = true;
-				window.setInterval(lib.moveLoop.bind(null, board), 500);
+				// TODO: global variables ahhh
+				window.intervalID = window.setInterval(lib.moveLoop.bind(null, board), 500);
 			}
 
       if (event.keyCode == '37') {
@@ -41,8 +46,23 @@ window.snakeGameUI = (function (lib) {
 	}
 
 	lib.moveLoop = function (board) {
-		board.snake.move();
+		board.moveSnake();
+
+		if (board.gameOver) {
+			$('.message').html("<p>GAME OVER</p>");
+			clearInterval(intervalID);
+		} 
+
 		lib.renderBoard(board);
+	}
+
+	lib.renderApples = function (board) {
+		for (var i = 0, n = board.apples.length; i < n; i++) {
+			var row = board.apples[i].row;
+			var col = board.apples[i].col;
+
+			$('.row:eq(' + row + ') .square:eq(' + col + ')').addClass('apple');
+		}
 	}
 
 	lib.renderSnake = function (snake) {
